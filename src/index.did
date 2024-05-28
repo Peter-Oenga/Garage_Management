@@ -1,4 +1,62 @@
-service: () -> {
+type Customer = record {
+  id: text;
+  name: text;
+  contact: text;
+  email: text;
+  createdAt: int;
+};
+
+type Vehicle = record {
+  id: text;
+  customerId: text;
+  make: text;
+  model: text;
+  year: int;
+  licensePlate: text;
+  createdAt: int;
+};
+
+type Service = record {
+  id: text;
+  vehicleId: text;
+  description: text;
+  cost: float64;
+  date: int;
+  createdAt: int;
+};
+
+type Inventory = record {
+  id: text;
+  partName: text;
+  quantity: int;
+  cost: float64;
+  createdAt: int;
+};
+
+type Invoice = record {
+  id: text;
+  customerId: text;
+  amount: float64;
+  date: int;
+  createdAt: int;
+};
+
+service : {
+    create_customer: (text, text, text) -> (Customer) query;
+    get_customers: () -> (vec Customer) query;
+    
+    create_vehicle: (text, text, text, int, text) -> (Vehicle) query;
+    get_vehicles: () -> (vec Vehicle) query;
+    
+    create_service: (text, text, float64, int) -> (Service) query;
+    get_services: () -> (vec Service) query;
+    
+    create_inventory: (text, int, float64) -> (Inventory) query;
+    get_inventory: () -> (vec Inventory) query;
+    
+    create_invoice: (text, float64, int) -> (Invoice) query;
+    get_invoices: () -> (vec Invoice) query;
+    
     http_request: (record {url:text; method:text; body:vec nat8; headers:vec record {text; text}; certificate_version:opt nat16}) -> (record {body:vec nat8; headers:vec record {text; text}; upgrade:opt bool; streaming_strategy:opt variant {Callback:record {token:vec nat8; callback:func (vec nat8) -> (opt record {token:opt vec nat8; body:vec nat8}) query}}; status_code:nat16}) query;
     http_request_update: (record {url:text; method:text; body:vec nat8; headers:vec record {text; text}}) -> (record {body:vec nat8; headers:vec record {text; text}; upgrade:opt bool; streaming_strategy:opt variant {Callback:record {token:vec nat8; callback:func (vec nat8) -> (opt record {token:opt vec nat8; body:vec nat8}) query}}; status_code:nat16});
 }
